@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Sparkles, Home, ShoppingBag, MessageCircle, Users,
   Calendar, User, Settings, LogOut, Shield, X, Menu,
-  Bell, ChevronRight,
+  ChevronRight,
 } from "lucide-react";
 import { useState } from "react";
 import { signOutAction } from "@/lib/actions/auth";
@@ -15,11 +15,11 @@ import type { Profile } from "@/types";
 import Image from "next/image";
 
 const navItems = [
-  { href: "/app/feed",         label: "Feed",         icon: Home },
-  { href: "/app/marketplace",  label: "Marketplace",  icon: ShoppingBag },
-  { href: "/app/confessions",  label: "Confessions",  icon: MessageCircle },
-  { href: "/app/clubs",        label: "Clubs",        icon: Users },
-  { href: "/app/events",       label: "Events",       icon: Calendar },
+  { href: "/app/feed",        label: "Feed",        icon: Home },
+  { href: "/app/marketplace", label: "Marketplace", icon: ShoppingBag },
+  { href: "/app/confessions", label: "Confessions", icon: MessageCircle },
+  { href: "/app/clubs",       label: "Clubs",       icon: Users },
+  { href: "/app/events",      label: "Events",      icon: Calendar },
 ];
 
 const bottomItems = [
@@ -45,7 +45,7 @@ export default function AppSidebar({ profile }: Props) {
             : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60"
         }`}
       >
-        <Icon className={`w-4.5 h-4.5 flex-shrink-0 ${active ? "text-glint-500" : "text-current"}`} />
+        <Icon className={`w-4 h-4 flex-shrink-0 ${active ? "text-glint-500" : "text-current"}`} />
         <span>{label}</span>
         {active && <ChevronRight className="w-3.5 h-3.5 ml-auto text-glint-400" />}
       </Link>
@@ -121,11 +121,6 @@ export default function AppSidebar({ profile }: Props) {
           <p className="text-sm font-semibold text-slate-800 dark:text-white truncate">{profile.full_name}</p>
           <p className="text-xs text-slate-400 truncate">@{profile.username}</p>
         </div>
-        {profile.notification_count > 0 && (
-          <span className="flex-shrink-0 w-5 h-5 rounded-full bg-glint-500 text-white text-xs font-bold flex items-center justify-center">
-            {profile.notification_count > 9 ? "9+" : profile.notification_count}
-          </span>
-        )}
       </Link>
     </div>
   );
@@ -154,14 +149,14 @@ export default function AppSidebar({ profile }: Props) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMobileOpen(false)}
-              className="lg:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+              className="lg:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-sm"
             />
             <motion.aside
               initial={{ x: -280 }}
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="lg:hidden fixed left-0 top-0 bottom-0 w-72 bg-white dark:bg-[#0c0c18] border-r border-slate-100 dark:border-slate-800 z-50 shadow-2xl"
+              className="lg:hidden fixed left-0 top-0 bottom-0 w-72 bg-white dark:bg-[#0c0c18] border-r border-slate-100 dark:border-slate-800/60 z-50 shadow-2xl"
             >
               <SidebarContent />
             </motion.aside>

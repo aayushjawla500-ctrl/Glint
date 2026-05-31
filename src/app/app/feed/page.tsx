@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import FeedClient from "@/components/feed/FeedClient";
+import GlintLoader from "@/components/ui/GlintLoader";
 
 export default async function FeedPage() {
   const supabase = await createClient();
@@ -11,7 +12,6 @@ export default async function FeedPage() {
     .eq("id", user!.id)
     .single();
 
-  // Initial posts load
   const { data: posts } = await supabase
     .from("posts")
     .select("*, user:profiles(id, full_name, username, avatar_url, branch, year)")
@@ -20,7 +20,6 @@ export default async function FeedPage() {
     .order("created_at", { ascending: false })
     .limit(10);
 
-  // Get liked posts
   const { data: likes } = await supabase
     .from("likes")
     .select("post_id")
@@ -34,9 +33,11 @@ export default async function FeedPage() {
   }));
 
   return (
-    <FeedClient
-      profile={profile!}
-      initialPosts={initialPosts}
-    />
+    <GlintLoader>
+      <FeedClient
+        profile={profile!}
+        initialPosts={initialPosts}
+      />
+    </GlintLoader>
   );
 }
