@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Outfit, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
@@ -16,15 +16,31 @@ const dmSans = DM_Sans({
   weight: ["300", "400", "500", "600"],
 });
 
+export const viewport: Viewport = {
+  themeColor: "#6366f1",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 export const metadata: Metadata = {
   title: {
     default: "Glint — Your Campus, In One Place",
     template: "%s | Glint",
   },
-  description:
-    "Connect, discover, buy, share, and experience campus life beautifully. The private social platform for your college.",
-  keywords: ["campus social", "college platform", "student community", "campus marketplace"],
+  description: "Connect, discover, buy, share, and experience campus life beautifully.",
+  keywords: ["campus social", "college platform", "student community"],
   authors: [{ name: "Glint" }],
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Glint",
+  },
+  formatDetection: {
+    telephone: false,
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -33,20 +49,19 @@ export const metadata: Metadata = {
     description: "The premium social platform built exclusively for your campus.",
     siteName: "Glint",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Glint — Your Campus, In One Place",
-    description: "The premium social platform built exclusively for your campus.",
-  },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Glint" />
+        <meta name="mobile-web-app-capable" content="yes" />
+      </head>
       <body
         className={`${outfit.variable} ${dmSans.variable} antialiased`}
         suppressHydrationWarning
@@ -67,6 +82,15 @@ export default function RootLayout({
             }}
           />
         </ThemeProvider>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            if ('serviceWorker' in navigator) {
+              window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js');
+              });
+            }
+          `
+        }} />
       </body>
     </html>
   );
